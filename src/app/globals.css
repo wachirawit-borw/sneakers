@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /*
  * =============================================================================
@@ -231,15 +233,13 @@ img {
   bottom: calc(var(--height) + var(--gap-between-tooltip-to-button));
 }
 
-/* คลาสเริ่มต้น: ซ่อนอยู่และเลื่อนลงไปเล็กน้อย */
 .scroll-animate {
   opacity: 0;
-  transform: translateY(30px); /* ทำให้มันเลื่อนขึ้นมาจากข้างล่างเล็กน้อย */
+  transform: translateY(30px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  transition-delay: 0.2s; /* หน่วงเวลาเล็กน้อยเพื่อให้ดูสวยงาม */
+  transition-delay: 0.2s;
 }
 
-/* คลาสที่จะเพิ่มเข้ามาเมื่อ Component ปรากฏบนหน้าจอ */
 .scroll-animate-in {
   opacity: 1;
   transform: translateY(0);

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import LoadingSpinner from '@/components/Loading';
 import ProductCard from '@/components/ProductCard';
@@ -63,7 +62,6 @@ export default function ShopPage() {
 
   return (
     <>
-      <Header />
       <main className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold text-center mb-4">Our Collection</h1>

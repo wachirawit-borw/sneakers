@@ -1,21 +1,21 @@
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import AnimateOnScroll from "@/components/AnimateOnScroll";
+'use client';
+
 import dynamic from "next/dynamic";
+import Hero from "@/components/Hero";
+import AnimateOnScroll from "@/components/AnimateOnScroll";
 
-const DynamicProduct = dynamic(() => import('@/components/Product'));
-const DynamicContact = dynamic(() => import('@/components/Contact'));
-const DynamicProductDetail = dynamic(() => import('@/components/WhyChooseUs'));
-const DynamicFaq = dynamic(() => import('@/components/Faq'));
-const DynamicAbout = dynamic(() => import('@/components/About'));
-const DynamicFooter = dynamic(() => import('@/components/Footer'));
-
+// Dynamic imports (โหลดฝั่ง client เท่านั้น)
+const DynamicProduct = dynamic(() => import('@/components/Product'), { ssr: false });
+const DynamicFeatures = dynamic(() => import('@/components/Features'), { ssr: false });
+const DynamicWhyChooseUs = dynamic(() => import('@/components/WhyChooseUs'), { ssr: false });
+const DynamicAbout = dynamic(() => import('@/components/About'), { ssr: false });
+const DynamicContact = dynamic(() => import('@/components/Contact'), { ssr: false });
+const DynamicFaq = dynamic(() => import('@/components/Faq'), { ssr: false });
+const DynamicFooter = dynamic(() => import('@/components/Footer'), { ssr: false });
 
 export default function Home() {
   return (
-    <>
-      <Header />
+    <main className="text-foreground">
       <Hero />
 
       <AnimateOnScroll>
@@ -23,11 +23,11 @@ export default function Home() {
       </AnimateOnScroll>
 
       <AnimateOnScroll>
-        <Features />
+        <DynamicFeatures />
       </AnimateOnScroll>
-      
+
       <AnimateOnScroll>
-        <DynamicProductDetail />
+        <DynamicWhyChooseUs />
       </AnimateOnScroll>
 
       <AnimateOnScroll>
@@ -45,6 +45,6 @@ export default function Home() {
       <AnimateOnScroll>
         <DynamicFooter />
       </AnimateOnScroll>
-    </>
-  )
+    </main>
+  );
 }

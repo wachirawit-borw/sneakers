@@ -8,7 +8,7 @@ const CheckIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function WhyChooseUs() {
     return (
-        <section className="bg-gradient-to-r from-[#f0cca8] to-[#ccdef5] py-10">
+        <section id="whychooseus" className="bg-gradient-to-r from-[#f0cca8] to-[#ccdef5] py-10">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                 <div className="w-full">
                     <div className="aspect-square relative rounded-lg overflow-hidden shadow-xl">

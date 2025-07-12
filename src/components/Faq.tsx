@@ -19,7 +19,7 @@ export default function Faq() {
     ];
 
     return (
-        <section className="py-20 px-4 text-black bg-gradient-to-r from-[#f0cca8] to-[#ccdef5]">
+        <section id="faq" className="py-20 px-4 text-black bg-gradient-to-r from-[#f0cca8] to-[#ccdef5]">
             <div className="max-w-3xl mx-auto">
                 <h2 className="text-4xl font-bold text-center mb-12">คำถามที่พบบ่อย</h2>
                 <div className="space-y-4">

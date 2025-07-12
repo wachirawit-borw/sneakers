@@ -14,15 +14,17 @@ interface HeaderProps {
 
 export default function Header({ allowTransparent = false }: HeaderProps) {
     const [isScrolled, setIsScrolled] = useState(false);
+    const [activeSection, setActiveSection] = useState('home');
     const pathname = usePathname();
     const sentinelRef = useRef<HTMLDivElement>(null);
 
     const mainPageLinks: NavLink[] = [
-        { href: "/", label: "Home" },
-        { href: "/shop", label: "Shop" },
+        { href: "#home", label: "Home" },
+        { href: "#products", label: "Products" },
         { href: "#features", label: "Features" },
+        { href: "#whychooseus", label: "Why" },
         { href: "#about", label: "About" },
-        { href: "#explore", label: "Explore" },
+        { href: "#contact", label: "Contact" }
     ];
 
     const subPageLinks: NavLink[] = [
@@ -34,8 +36,8 @@ export default function Header({ allowTransparent = false }: HeaderProps) {
     const isTransparentMode = (isHomePage || allowTransparent) && !isScrolled;
     const navLinksToShow = isHomePage ? mainPageLinks : subPageLinks;
 
+    // Scroll detection using sentinel
     useEffect(() => {
-        // ถ้าไม่ได้อยู่ในโหมดโปร่งใส ให้ตั้งค่า isScrolled เป็น true ทันที
         if (!allowTransparent && !isHomePage) {
             setIsScrolled(true);
             return;
@@ -46,42 +48,121 @@ export default function Header({ allowTransparent = false }: HeaderProps) {
 
         const observer = new IntersectionObserver(
             ([entry]) => {
-                // เมื่อ sentinel ออกจากหน้าจอ (ไม่ intersecting) แสดงว่าเราได้ scroll ลงมาแล้ว
                 setIsScrolled(!entry.isIntersecting);
             },
             {
-                root: null, // ใช้ viewport เป็น root
+                root: null,
                 rootMargin: '0px',
-                threshold: 0, // trigger เมื่อ sentinel เริ่มหายไปจากหน้าจอ
+                threshold: 0,
             }
         );
 
         observer.observe(sentinel);
-
-        return () => {
-            observer.unobserve(sentinel);
-        };
+        return () => observer.unobserve(sentinel);
     }, [pathname, allowTransparent, isHomePage]);
+
+    // Active section detection - เพิ่ม debug logs
+    useEffect(() => {
+        if (!isHomePage) return;
+
+        const handleScroll = () => {
+            const scrollTop = window.pageYOffset;
+            console.log('Scroll position:', scrollTop);
+            
+            if (scrollTop < 100) {
+                console.log('Setting active section to: home');
+                setActiveSection('home');
+                return;
+            }
+
+            const sections: string[] = ['products', 'features', 'whychooseus', 'about', 'contact'];
+            let currentSection = 'home';
+
+            for (const sectionId of sections) {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    const elementTop = rect.top + scrollTop;
+                    const elementHeight = rect.height;
+                    
+                    console.log(`Section ${sectionId}:`, {
+                        elementTop,
+                        elementHeight,
+                        scrollTop,
+                        inView: scrollTop >= elementTop - 300
+                    });
+                    
+                    if (scrollTop >= elementTop - 300) {
+                        currentSection = sectionId;
+                    }
+                } else {
+                    console.warn(`Section ${sectionId} not found in DOM`);
+                }
+            }
+
+            console.log('Setting active section to:', currentSection);
+            setActiveSection(currentSection);
+        };
+
+        // เช็คทันทีว่ามี sections อยู่หรือไม่
+        setTimeout(() => {
+            console.log('Checking for sections...');
+            const sections = ['products', 'features', 'about', 'contact'];
+            sections.forEach(id => {
+                const element = document.getElementById(id);
+                console.log(`Section ${id}:`, element ? 'Found' : 'Not found');
+            });
+            
+            handleScroll();
+        }, 500);
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isHomePage]);
 
     const handleLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
         const href = e.currentTarget.getAttribute('href');
         if (href && href.startsWith('#')) {
             e.preventDefault();
             const targetId = href.substring(1);
-            if (targetId === 'header') {
+            
+            console.log('Clicking link:', targetId);
+            
+            if (targetId === 'home') {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                setActiveSection('home');
                 return;
             }
+            
             const targetElement = document.getElementById(targetId);
             if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
+                const headerHeight = 80;
+                const elementPosition = targetElement.offsetTop - headerHeight;
+                
+                console.log('Scrolling to:', targetId, 'at position:', elementPosition);
+                
+                window.scrollTo({
+                    top: elementPosition,
+                    behavior: 'smooth'
+                });
+                
+                setActiveSection(targetId);
+            } else {
+                console.error(`Element with id "${targetId}" not found`);
             }
         }
     };
 
+    const isLinkActive = (href: string) => {
+        if (href.startsWith('#')) {
+            const sectionId = href.substring(1);
+            return activeSection === sectionId;
+        }
+        return pathname === href;
+    };
+
     return (
         <>
-            {/* Sentinel element - วางไว้ที่ตำแหน่งที่ต้องการให้ trigger */}
             <div 
                 ref={sentinelRef} 
                 className="absolute top-0 left-0 w-full h-16 pointer-events-none"
@@ -113,8 +194,10 @@ export default function Header({ allowTransparent = false }: HeaderProps) {
                 <div className="hidden md:block">
                     <HeaderDesktop
                         navLinks={navLinksToShow}
-                        linkClassName={isTransparentMode ? 'text-white' : 'text-gray-700'}
+                        linkClassName={isTransparentMode ? 'text-white' : 'text-gray-100'}
                         onLinkClick={handleLinkClick}
+                        activeSection={activeSection}
+                        isLinkActive={isLinkActive}
                     />
                 </div>
                 <div className="md:hidden">
@@ -122,6 +205,8 @@ export default function Header({ allowTransparent = false }: HeaderProps) {
                         navLinks={navLinksToShow}
                         isScrolled={!isTransparentMode}
                         onLinkClick={handleLinkClick}
+                        activeSection={activeSection}
+                        isLinkActive={isLinkActive}
                     />
                 </div>
             </header>

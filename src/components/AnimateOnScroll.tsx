@@ -1,36 +1,34 @@
-"use client";
+'use client';
+import { useEffect, useRef, useState } from 'react';
 
-import { useInView } from 'react-intersection-observer';
-// ✅ 1. Import useState และ useEffect เพิ่มเข้ามา
-import { useState, useEffect, type ReactNode } from 'react';
-
-type AnimateOnScrollProps = {
-  children: ReactNode;
-  className?: string;
-};
-
-export default function AnimateOnScroll({ children, className = '' }: AnimateOnScrollProps) {
-
-  const [hasMounted, setHasMounted] = useState(false);
+export default function AnimateOnScroll({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    setHasMounted(true);
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.05, rootMargin: '0px 0px -10% 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
-
-
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  if (!hasMounted) {
-    return null;
-  }
 
   return (
     <div
       ref={ref}
-      className={`scroll-animate ${inView ? 'scroll-animate-in' : ''} ${className}`}
+      className={`transition-opacity duration-700 ease-out ${
+        isVisible ? 'animate-fade-up' : 'opacity-0'
+      }`}
     >
       {children}
     </div>

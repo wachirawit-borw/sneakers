@@ -3,7 +3,6 @@
 "use client";
 
 import type { FC, MouseEvent } from "react";
-import Link from 'next/link';
 import clsx from 'clsx';
 
 export type NavLink = {
@@ -33,12 +32,12 @@ const Navigation: FC<NavigationProps> = ({
         const isActive = isLinkActive ? isLinkActive(link.href) : false;
         
         return (
-          <Link
+          <a
             key={link.href}
             href={link.href}
             onClick={onLinkClick}
             className={clsx(
-              'hover:opacity-80 transition-all duration-300 relative',
+              'hover:opacity-80 transition-all duration-300 relative cursor-pointer',
               linkClassName,
               {
                 // เพิ่ม style สำหรับ active link
@@ -51,7 +50,7 @@ const Navigation: FC<NavigationProps> = ({
             )}
           >
             {link.label}
-          </Link>
+          </a>
         );
       })}
     </nav>
