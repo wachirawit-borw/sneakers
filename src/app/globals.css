@@ -1,26 +1,246 @@
 @import "tailwindcss";
 
+/*
+ * =============================================================================
+ * 🌐 GLOBAL & BASE STYLES
+ * =============================================================================
+ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0d4b7;
+  overflow-x: hidden;
+}
+
+/*
+ * =============================================================================
+ * 🖋️ TYPOGRAPHIC ELEMENTS
+ * =============================================================================
+ */
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+a {
+  font-weight: 800;
+  text-decoration: none;
+  color: #dadbdb;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #4465c1;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/*
+ * =============================================================================
+ * 🖼️ MEDIA & LAYOUT
+ * =============================================================================
+ */
+
+/* Main content container */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Global image styling */
+img {
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+/*
+ * =============================================================================
+ * 🎨 COLOR SCHEMES
+ * =============================================================================
+ */
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #1f2937; /* text-gray-800 */
+    background-color: #ffffff;
+  }
+
+  a:hover {
+    color: #1e3a8a;
+  }
+}
+
+/*
+ * =============================================================================
+ * ✨ COMPONENTS
+ * =============================================================================
+ */
+
+/* ───── 🎠 Component: Swiper Carousel ───── */
+
+.mySwiper {
+  width: 100%;
+  /* เพิ่ม 3 บรรทัดนี้เข้าไป */
+  max-width: 1280px;      /* 1. กำหนดความกว้างสูงสุด */
+  margin-left: auto;      /* 2. จัดให้อยู่กลาง */
+  margin-right: auto;     /* 3. จัดให้อยู่กลาง */
+
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 400px;
+  color: initial;
+  text-align: initial;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ───── 🔘 Component: Custom Button (button-shop) ───── */
+
+.button-shop {
+  --width: 100px;
+  --height: 35px;
+  --gap-between-tooltip-to-button: 18px;
+  --button-color: #9c1212;
+  --button-radius: 100px;
+  width: var(--width);
+  height: var(--height);
+  background: var(--button-color);
+  position: relative;
+  text-align: center;
+  border: 2px solid #fffdfd;
+  border-radius: var(--button-radius);
+  font-family: "Arial";
+  transition: background 0.3s;
+  overflow: hidden;
+}
+
+.button-shop::before {
+  position: absolute;
+  content: attr(data-tooltip);
+  background-color: #555;
+  font-size: 0.9rem;
+  color: #fff;
+  border-radius: .25em;
+  line-height: var(--tooltip-height);
+  bottom: calc(var(--height) + var(--gap-between-tooltip-to-button) + 10px);
+  left: calc(50% - var(--tooltip-width) / 2);
+}
+
+.button-shop::after {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #555;
+  left: calc(50% - 10px);
+  bottom: calc(100% + var(--gap-between-tooltip-to-button) - 10px);
+}
+
+.button-shop::after,
+.button-shop::before {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
+}
+
+.button-shop__wrapper,
+.button-shop__text,
+.button-shop__icon {
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  color: #fff;
+}
+
+.button-shop__text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  transition: top 0.5s;
+}
+
+.button-shop__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 100%;
+  transition: top 0.5s;
+}
+
+.button-shop__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.button-shop:hover {
+  background: #222;
+}
+
+.button-shop:hover .button-shop__text {
+  top: -100%;
+}
+
+.button-shop:hover .button-shop__icon {
+  top: 0;
+}
+
+.button-shop:hover::before,
+.button-shop:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.button-shop:hover::after {
+  bottom: calc(var(--height) + var(--gap-between-tooltip-to-button) - 20px);
+}
+
+.button-shop:hover::before {
+  bottom: calc(var(--height) + var(--gap-between-tooltip-to-button));
+}
+
+/* คลาสเริ่มต้น: ซ่อนอยู่และเลื่อนลงไปเล็กน้อย */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(30px); /* ทำให้มันเลื่อนขึ้นมาจากข้างล่างเล็กน้อย */
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition-delay: 0.2s; /* หน่วงเวลาเล็กน้อยเพื่อให้ดูสวยงาม */
+}
+
+/* คลาสที่จะเพิ่มเข้ามาเมื่อ Component ปรากฏบนหน้าจอ */
+.scroll-animate-in {
+  opacity: 1;
+  transform: translateY(0);
 }

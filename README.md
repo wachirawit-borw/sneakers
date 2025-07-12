@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏆 ZURFRK Portfolio Website
 
-## Getting Started
+เว็บไซต์นี้คือ **เว็บสะสมผลงาน (Portfolio)** ของผู้ใช้งาน **wachirawit borwonsuk**  
+นำเสนอทั้งดีไซน์ ความสามารถ และตัวอย่างงานผ่านหน้า Landing Page สุดทันสมัย
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🎯 วัตถุประสงค์
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- นำเสนอแบรนด์ ZURFRK ด้วยภาพลักษณ์ที่เรียบหรู ทันสมัย
+- ทดลองและแสดงความเข้าใจในเครื่องมือ Frontend ที่เรียนรู้มา
+- สร้าง Landing Page ที่ใช้งานได้จริง พร้อม responsive และ SEO friendly
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ เทคโนโลยีที่ใช้
 
-## Learn More
+| เทคโนโลยี | รายละเอียด |
+|-----------|-------------|
+| **React** | สร้าง UI ที่ประกอบด้วย Component แบบ reusable |
+| **TypeScript** | เพิ่มความปลอดภัยด้านชนิดข้อมูล พร้อมตรวจจับ error ตั้งแต่ compile time |
+| **Next.js (App Router)** | จัดการ routing, static optimization และ performance |
+| **Tailwind CSS** | จัดการ layout และ design แบบ utility-first |
+| **HTML5 + CSS3** | โครงสร้างพื้นฐานของหน้าเว็บ |
+| **Video Fallback Logic** | ใช้วิดีโอเป็น background และ fallback เป็นรูปภาพเมื่อเล่นไม่ได้ |
+| **Responsive Design** | รองรับการแสดงผลทุกขนาดหน้าจอ |
+| **Lighthouse Optimization** | พัฒนาโดยคำนึงถึง SEO, accessibility และ performance |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎬 ฟีเจอร์เด่น
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **พื้นหลังแบบวิดีโอ + รูป fallback**
+  - วิดีโอแสดงเป็นพื้นหลังในหน้า Hero section
+  - ถ้า browser ไม่รองรับ video หรือช้า → แสดงรูปภาพแทนอัตโนมัติ
+- **Component แยกชัดเจน**
+  - เช่น `ImageBox`, `Feature`, `FooterBlock`, `FooterList`
+- **เมนู Navigation ทั้ง desktop และ mobile**
+  - มี dropdown สำหรับ mobile พร้อม toggle ได้ด้วย `useState`
+- **SEO-Friendly**
+  - ใช้ `alt` อย่างถูกต้องใน `<Image>`
+  - ใช้ semantic HTML (`<section>`, `<header>`, `<footer>`)
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📱 Responsive ครอบคลุม
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Mobile (≤ 640px)
+- Tablet (≥ 768px)
+- Desktop (≥ 1024px)
+- ใช้ Tailwind breakpoint เช่น `sm:`, `md:`, `lg:`
+
+---
+
+## 📌 หมายเหตุ
+
+- วิดีโอ `.webm` จะถูก preload ด้วย `<video preload="auto" />`  
+- การ fallback เป็น `<Image>` จะใช้ `useEffect` เพื่อตรวจสอบความสามารถของเบราว์เซอร์
+
+---
+
+## 👨‍🎓 ผู้พัฒนา
+
+**ZURFRK**  
+Fullstack Frontend  
+โปรเจกต์จริงเพื่อฝึก React + Next.js + Tailwind
+
+---
