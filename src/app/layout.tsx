@@ -16,7 +16,7 @@ export const metadata = {
     siteName: "ZURFRK Men's Shoes",
     images: [
       {
-        url: '/pictures/og-image.webp',
+        url: '/picture/og-image.webp',
         width: 1200,
         height: 524,
         alt: "ZURFRK Men's Shoes Website",
@@ -26,9 +26,9 @@ export const metadata = {
     type: 'website',
   },
   icons: {
-    icon: '/pictures/favicon.ico',
+    icon: '/picture/favicon.ico',
     shortcut: '/pictures/favicon.ico',
-    apple: '/pictures/favicon.ico',
+    apple: '/picture/favicon.ico',
   },
 }
 

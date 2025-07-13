@@ -46,7 +46,7 @@ export default function Product() {
 
   return (
     <AnimateOnScroll>
-      <section id="products" className="bg-gradient-to-r from-[#f0cca8] to-[#ccdef5] py-16">
+      <section id="products" className="bg-gradient-to-r from-[#f0cca8] to-[#ccdef5] min-h-screen flex flex-col justify-center py-16">
         <h2 className="text-3xl font-bold mb-12 tracking-tight drop-shadow-sm text-center">
           Products
         </h2>
