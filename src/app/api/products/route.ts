@@ -1,4 +1,4 @@
-// "server actions" route file – อ่าน/เขียน DB ผ่าน Prisma
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
