@@ -65,7 +65,7 @@ export default function Product() {
           {products.map((p) => (
             <SwiperSlide key={p.id} style={{ width: 350, height: 450 }}>
               <Link
-                href={`/product/${p.id}`}
+                href={`/products/${p.id}`}
                 className="group block h-full w-full relative rounded-xl overflow-hidden shadow-lg"
               >
                 <Image
