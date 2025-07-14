@@ -43,7 +43,6 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   return (
     <>
       <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        {/* Breadcrumb */}
         <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 py-3">
             <nav className="flex items-center space-x-2 text-sm text-gray-600">
@@ -58,7 +57,6 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Product Image Section */}
             <div className="space-y-4">
               <div className="relative aspect-square bg-white rounded-2xl shadow-xl overflow-hidden group">
                 <Image
@@ -69,8 +67,6 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                {/* Image Actions */}
                 <div className="absolute top-4 right-4 flex flex-col space-y-2">
                   <button className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-colors">
                     <Heart className="w-5 h-5 text-gray-600 hover:text-red-500 transition-colors" />
@@ -80,7 +76,6 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                   </button>
                 </div>
 
-                {/* Stock Badge */}
                 <div className="absolute top-4 left-4">
                   <span className={`px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm ${
                     product.stock > 0 
