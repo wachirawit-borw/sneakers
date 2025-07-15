@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import HeaderDesktop from './HeaderDesktop';
 import HeaderMobile from './HeaderMobile';
 import { type NavLink } from './Navigation';
-import { Search, ShoppingBag, User, Heart, Menu, Phone, Mail } from 'lucide-react';
+import { ShoppingBag, User, Heart, Menu, Search, Bell, ChevronDown } from 'lucide-react';
 
 interface HeaderProps {
   allowTransparent?: boolean;
@@ -16,6 +16,9 @@ interface HeaderProps {
 export default function Header({ allowTransparent = false }: HeaderProps) {
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [cartCount] = useState(3);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
     const pathname = usePathname();
     const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -139,137 +142,136 @@ export default function Header({ allowTransparent = false }: HeaderProps) {
         return pathname === href;
     };
 
-    // Render different header styles based on page type
+    // Enhanced sub-page header with theme colors
     const renderSubPageHeader = () => (
-        <header className="sticky top-0 z-50 bg-white shadow-lg">
-            {/* Top Bar with gradient theme */}
-            <div className="bg-gradient-to-r from-[#f0cca8] to-[#ccdef5] text-gray-800 py-2.5 px-4">
-                <div className="max-w-7xl mx-auto flex justify-between items-center text-sm">
-                    <div className="flex items-center space-x-1">
-                        <span className="text-lg">🚚</span>
-                        <span className="font-medium">ฟรีค่าส่ง สำหรับคำสั่งซื้อเกิน ฿500</span>
-                    </div>
-                    <div className="hidden md:flex items-center space-x-6">
-                        <div className="flex items-center space-x-2">
-                            <Phone className="w-4 h-4" />
-                            <span className="font-medium">02-123-4567</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Mail className="w-4 h-4" />
-                            <span className="font-medium">support@zurfrk.com</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Header */}
-            <div className="bg-white px-4 py-4 border-b border-gray-100">
-                <div className="max-w-7xl mx-auto flex items-center justify-between">
-                    {/* Logo */}
+        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-gray-200/50 shadow-sm">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
+                <div className="flex items-center justify-between py-3">
+                    {/* Enhanced Logo with theme colors */}
                     <Link href="/" className="flex items-center space-x-3 group">
-                        <div className="w-12 h-12 bg-gradient-to-r from-[#f0cca8] to-[#ccdef5] rounded-2xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-                            <span className="text-gray-800 font-bold text-xl">Z</span>
+                        <div className="relative">
+                            <div className="w-12 h-12 bg-gradient-to-br from-[#f0cca8] to-[#ccdef5] rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                                <span className="text-gray-800 font-bold text-xl">Z</span>
+                            </div>
                         </div>
                         <div>
-                            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#d17314] to-[#1365cf] bg-clip-text text-transparent">
+                            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#d4a574] to-[#98b6e8] bg-clip-text text-transparent">
                                 ZURFRK
                             </h1>
-                            <p className="text-xs text-gray-500 font-medium">Premium Footwear</p>
+                            <p className="text-xs text-gray-600 font-medium">Premium Footwear</p>
                         </div>
                     </Link>
 
-                    {/* Search Bar */}
-                    <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-                        <div className="relative w-full">
-                            <input
-                                type="text"
-                                placeholder="ค้นหาสินค้า, แบรนด์, หรือหมวดหมู่..."
-                                className="w-full px-4 py-3.5 pl-12 pr-24 border-2 border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent bg-gray-50 focus:bg-white transition-all"
-                            />
-                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                            <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-[#f0cca8] to-[#ccdef5] text-gray-800 px-4 py-2 rounded-full hover:shadow-md transition-all font-medium">
-                                ค้นหา
-                            </button>
-                        </div>
+                    {/* Enhanced Navigation with theme colors */}
+                    <div className="hidden lg:flex items-center space-x-8">
+                        {navLinksToShow.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={clsx(
+                                    'relative px-4 py-2 text-sm font-medium transition-all duration-300 group',
+                                    {
+                                        'text-transparent bg-gradient-to-r from-[#d4a574] to-[#98b6e8] bg-clip-text': isLinkActive(link.href),
+                                        'text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-[#d4a574] hover:to-[#98b6e8] hover:bg-clip-text': !isLinkActive(link.href)
+                                    }
+                                )}
+                                onClick={handleLinkClick}
+                            >
+                                {link.label}
+                                <span className={clsx(
+                                    'absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#f0cca8] to-[#ccdef5] transition-all duration-300',
+                                    {
+                                        'w-full': isLinkActive(link.href),
+                                        'w-0 group-hover:w-full': !isLinkActive(link.href)
+                                    }
+                                )}></span>
+                            </Link>
+                        ))}
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex items-center space-x-2">
-                        <button className="md:hidden p-2.5 hover:bg-gray-100 rounded-full transition-colors">
+                    {/* Enhanced Action Area with theme colors */}
+                    <div className="flex items-center space-x-4">
+                        {/* Search Button */}
+                        <button 
+                            onClick={() => setIsSearchOpen(!isSearchOpen)}
+                            className="hidden md:flex items-center justify-center w-10 h-10 hover:bg-gradient-to-r hover:from-[#f0cca8]/20 hover:to-[#ccdef5]/20 rounded-full transition-all duration-300 hover:scale-105"
+                        >
                             <Search className="w-5 h-5 text-gray-600" />
                         </button>
-                        
-                        <button className="hidden md:flex items-center space-x-2 px-3 py-2 hover:bg-gray-100 rounded-full transition-colors">
+
+                        {/* Notification */}
+                        <button className="hidden md:flex items-center justify-center w-10 h-10 hover:bg-gradient-to-r hover:from-[#f0cca8]/20 hover:to-[#ccdef5]/20 rounded-full transition-all duration-300 hover:scale-105 relative">
+                            <Bell className="w-5 h-5 text-gray-600" />
+                            <span className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-[#e8a567] to-[#8ba3d1] rounded-full animate-bounce"></span>
+                        </button>
+
+                        {/* Wishlist */}
+                        <button className="hidden md:flex items-center space-x-2 px-3 py-2 hover:bg-gradient-to-r hover:from-[#f0cca8]/20 hover:to-[#ccdef5]/20 rounded-full transition-all duration-300 hover:scale-105">
                             <Heart className="w-5 h-5 text-gray-600" />
                             <span className="text-sm text-gray-700 font-medium">รายการโปรด</span>
                         </button>
-                        
-                        <button className="hidden md:flex items-center space-x-2 px-3 py-2 hover:bg-gray-100 rounded-full transition-colors">
-                            <User className="w-5 h-5 text-gray-600" />
-                            <span className="text-sm text-gray-700 font-medium">เข้าสู่ระบบ</span>
-                        </button>
-                        
-                        <button className="relative p-2.5 hover:bg-gray-100 rounded-full transition-colors">
-                            <ShoppingBag className="w-5 h-5 text-gray-600" />
-                            <span className="absolute -top-1 -right-1 bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-sm">
-                                3
-                            </span>
-                        </button>
-                        
-                        <button className="md:hidden p-2.5 hover:bg-gray-100 rounded-full transition-colors">
-                            <Menu className="w-5 h-5 text-gray-600" />
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            {/* Navigation */}
-            <nav className="bg-gradient-to-r from-[#f0cca8]/20 to-[#ccdef5]/20 backdrop-blur-sm border-b border-gray-100">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="flex items-center justify-between">
-                        {/* Categories Dropdown */}
-                        <div className="relative">
-                            <button className="flex items-center space-x-2 px-4 py-3 bg-gradient-to-r from-[#f0cca8] to-[#ccdef5] text-gray-800 rounded-b-xl hover:shadow-md transition-all font-medium">
-                                <Menu className="w-4 h-4" />
-                                <span>หมวดหมู่สินค้า</span>
+                        {/* Profile Dropdown */}
+                        <div className="hidden md:flex relative">
+                            <button 
+                                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                                className="flex items-center space-x-2 px-3 py-2 hover:bg-gradient-to-r hover:from-[#f0cca8]/20 hover:to-[#ccdef5]/20 rounded-full transition-all duration-300 hover:scale-105"
+                            >
+                                <User className="w-5 h-5 text-gray-600" />
+                                <span className="text-sm text-gray-700 font-medium">บัญชี</span>
+                                <ChevronDown className={clsx("w-4 h-4 text-gray-500 transition-transform", {
+                                    "rotate-180": isProfileOpen
+                                })} />
                             </button>
+                            
+                            {isProfileOpen && (
+                                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                                    <Link href="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-[#f0cca8]/20 hover:to-[#ccdef5]/20 transition-all duration-200">
+                                        เข้าสู่ระบบ
+                                    </Link>
+                                    <Link href="/register" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-[#f0cca8]/20 hover:to-[#ccdef5]/20 transition-all duration-200">
+                                        สมัครสมาชิก
+                                    </Link>
+                                </div>
+                            )}
                         </div>
 
-                        {/* Main Navigation */}
-                        <div className="hidden md:flex items-center space-x-8">
-                            {navLinksToShow.map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    className={clsx(
-                                        'px-3 py-3 text-sm font-medium transition-all relative',
-                                        {
-                                            'text-orange-600 border-b-2 border-orange-400': isLinkActive(link.href),
-                                            'text-gray-700 hover:text-orange-600': !isLinkActive(link.href)
-                                        }
-                                    )}
-                                    onClick={handleLinkClick}
-                                >
-                                    {link.label}
-                                </Link>
-                            ))}
-                        </div>
+                        {/* Shopping Cart */}
+                        <Link href="/cart" className="relative p-3 hover:bg-gradient-to-r hover:from-[#f0cca8]/20 hover:to-[#ccdef5]/20 rounded-full transition-all duration-300 hover:scale-105 group">
+                            <ShoppingBag className="w-6 h-6 text-gray-600 group-hover:text-gray-800" />
+                            {cartCount > 0 && (
+                                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-[#e8a567] to-[#8ba3d1] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-lg animate-bounce">
+                                    {cartCount}
+                                </span>
+                            )}
+                        </Link>
 
-                        {/* Special Offers */}
-                        <div className="hidden lg:flex items-center space-x-3">
-                            <span className="px-3 py-1.5 bg-gradient-to-r from-red-100 to-orange-100 text-red-600 text-xs font-bold rounded-full shadow-sm">
-                                🔥 Sale up to 70%
-                            </span>
-                            <span className="px-3 py-1.5 bg-gradient-to-r from-green-100 to-emerald-100 text-green-600 text-xs font-bold rounded-full shadow-sm">
-                                ✨ New Arrival
-                            </span>
-                        </div>
+                        {/* Mobile Menu */}
+                        <button className="lg:hidden p-2 hover:bg-gradient-to-r hover:from-[#f0cca8]/20 hover:to-[#ccdef5]/20 rounded-full transition-all duration-300">
+                            <Menu className="w-6 h-6 text-gray-600" />
+                        </button>
                     </div>
                 </div>
-            </nav>
+
+                {/* Search Bar with theme colors */}
+                {isSearchOpen && (
+                    <div className="pb-4 border-t border-gray-200 pt-4 mt-2">
+                        <div className="relative max-w-md mx-auto">
+                            <input
+                                type="text"
+                                placeholder="ค้นหาสินค้า..."
+                                className="w-full px-4 py-3 pl-12 bg-gradient-to-r from-[#f0cca8]/10 to-[#ccdef5]/10 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#d4a574] focus:border-transparent transition-all duration-300"
+                                autoFocus
+                            />
+                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        </div>
+                    </div>
+                )}
+            </div>
         </header>
     );
 
+    // Enhanced home page header with theme colors
     const renderHomePageHeader = () => (
         <>
             <div 
@@ -281,34 +283,60 @@ export default function Header({ allowTransparent = false }: HeaderProps) {
             <header
                 id="header"
                 className={clsx(
-                    'w-full px-4 sm:px-6 py-4 flex justify-between items-center top-0 z-50 transition-all duration-300',
+                    'w-full px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center top-0 z-50 transition-all duration-500',
                     {
                         'absolute bg-transparent': isTransparentMode,
-                        'sticky bg-gradient-to-r from-[#f0cca8] to-[#ccdef5] shadow-lg backdrop-blur-sm': !isTransparentMode,
+                        'sticky bg-gradient-to-r from-[#d88e5a] to-[#6fa0db] backdrop-blur-lg shadow-lg border-b border-gray-200/50': !isTransparentMode,
                     }
                 )}
             >
-                <Link href="/">
-                    <h1 className={clsx(
-                        'text-3xl font-extrabold tracking-wide cursor-pointer transition-all',
-                        {
-                            'text-white drop-shadow-lg': isTransparentMode,
-                            'bg-gradient-to-r from-[#d17314] to-[#1365cf] bg-clip-text text-transparent': !isTransparentMode,
-                        }
-                    )}>
-                        ZURFRK
-                    </h1>
+                <Link href="/" className="group">
+                    <div className="flex items-center space-x-3">
+                        <div className="relative">
+                            <div className={clsx(
+                                'w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-105',
+                                {
+                                    'bg-white/20 backdrop-blur-sm': isTransparentMode,
+                                    'bg-gradient-to-br from-[#f0cca8] to-[#ccdef5]': !isTransparentMode
+                                }
+                            )}>
+                                <span className={clsx(
+                                    'font-bold text-xl transition-colors',
+                                    {
+                                        'text-white': isTransparentMode,
+                                        'text-gray-800': !isTransparentMode
+                                    }
+                                )}>Z</span>
+                            </div>
+                        </div>
+                        <h1 className={clsx(
+                            'text-2xl font-extrabold tracking-wide transition-all duration-300',
+                            {
+                                'text-white drop-shadow-lg': isTransparentMode,
+                                'text-neutral-900 bg-clip-text text-transparent': !isTransparentMode,
+                            }
+                        )}>
+                            ZURFRK
+                        </h1>
+                    </div>
                 </Link>
 
                 <div className="hidden md:block">
                     <HeaderDesktop
                         navLinks={navLinksToShow}
-                        linkClassName={isTransparentMode ? 'text-white drop-shadow-md' : 'text-gray-800'}
+                        linkClassName={clsx(
+                            'transition-all duration-300',
+                            {
+                                'text-white drop-shadow-md hover:text-[#f0cca8]': isTransparentMode,
+                                'text-gray-800 hover:text-transparent hover:bg-gradient-to-r hover:from-[#d4a574] hover:to-[#98b6e8] hover:bg-clip-text': !isTransparentMode
+                            }
+                        )}
                         onLinkClick={handleLinkClick}
                         activeSection={activeSection}
                         isLinkActive={isLinkActive}
                     />
                 </div>
+                
                 <div className="md:hidden">
                     <HeaderMobile
                         navLinks={navLinksToShow}
@@ -321,6 +349,26 @@ export default function Header({ allowTransparent = false }: HeaderProps) {
             </header>
         </>
     );
+
+    // Click outside handler for dropdowns
+    useEffect(() => {
+        const handleClickOutside = (event: Event) => {
+            const target = event.target as HTMLElement;
+            
+            // Check if click is outside profile dropdown
+            if (isProfileOpen && !target.closest('[data-profile-dropdown]')) {
+                setIsProfileOpen(false);
+            }
+            
+            // Check if click is outside search
+            if (isSearchOpen && !target.closest('[data-search-area]')) {
+                setIsSearchOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isProfileOpen, isSearchOpen]);
 
     return isHomePage ? renderHomePageHeader() : renderSubPageHeader();
 }
