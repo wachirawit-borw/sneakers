@@ -32,6 +32,7 @@ export default function ProductCard({ product, viewMode }: ProductCardProps) {
       className={`group overflow-hidden rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow duration-300 ${
         viewMode === 'list' ? 'flex flex-row gap-4' : 'block'
       }`}
+      prefetch={true} // เพิ่ม prefetch เพื่อโหลดหน้าล่วงหน้า
     >
       {/* Image */}
       <div className={`relative ${viewMode === 'list' ? 'w-1/3' : ''}`}>
@@ -42,6 +43,9 @@ export default function ProductCard({ product, viewMode }: ProductCardProps) {
             fill
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
+            priority={false} // ไม่ต้อง priority สำหรับ card
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
           />
         </div>
         <div className="absolute top-3 left-3 flex flex-col gap-2">
